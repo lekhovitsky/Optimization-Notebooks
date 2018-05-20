@@ -64,15 +64,15 @@ def minimize_diffalg(f, x0, jacf, left, right, tol=1e-4, max_iter=200, verbose=F
     for k in range(max_iter):
         
         pprint("Iteration %d" % (k+1), verbose=verbose)
-        x = X[k].copy()
+        x = X[-1].copy()
         
         for r in range(len(x0)):
             s = make_step(x, r, jacf, left, right, tol)
             pprint("r = %d, step = %.4f" % (r+1, s), verbose=verbose)
             x[r] += s
+            X.append(x.copy())
             
         pprint("x%d =" % (k+1), x, "\nf = %.3f\n" % f(x), verbose=verbose)
-        X.append(x)
         
         if is_optimal_point_all(x, jacf, left, right, tol):
             success = True
@@ -81,5 +81,5 @@ def minimize_diffalg(f, x0, jacf, left, right, tol=1e-4, max_iter=200, verbose=F
     
     pprint(message, verbose=verbose)
     
-    return OptimizeResult(fun = f(X[-1]), jac = jacf(X[-1]), x = X[-1],
+    return OptimizeResult(fun = f(X[-1]), jac = jacf(X[-1]), x = X[-1], hist = X,
                           nit = k, message = message, success = success)

@@ -26,3 +26,20 @@ def plot_surface_and_contours(ff, xx, yy, levels):
     ax2.set_title("Contour lines")
     
     return fig
+
+def plot_solution_trajectory(x_hist, y_hist, ff, xx, yy, levels):
+    
+    fig, ax = plt.subplots(figsize=(6, 4))
+    cs = ax.contour(xx, yy, ff, levels, alpha=0.6,
+                     colors=sns.color_palette("Blues"))
+    ax.set_aspect(1)
+    ax.set_xlabel('$x_1$')
+    ax.set_ylabel('$x_2$')
+    ax.clabel(cs, levels, fmt="%.2f")
+    
+    ax.scatter(x_hist, y_hist, c='r', s=10, alpha=0.6)
+    ax.scatter(x_hist[-1:], y_hist[-1:], c='r', s=30, alpha=0.6, label='$(x^{*}, y^{*})$')
+    ax.plot(x_hist, y_hist, color='r', alpha=0.6)
+    ax.legend()
+    
+    return fig, ax
